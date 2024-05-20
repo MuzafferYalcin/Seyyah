@@ -12,23 +12,21 @@ import { Observable } from 'rxjs';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
+
 export class AppComponent {
   title = 'seyyah';
   text: string = "";
-
   sehir : string = ""
   gun : string = ""
   butce : string = ""
 
-
   jsonResponse: any[] = [];
   genAI = new GoogleGenerativeAI("AIzaSyAtXrRiulYYZnFtGKBK-kcOsJx85GIxzvM");
-  constructor() {
-    //this.run();
-  }
-
+  constructor() {}
+  newLis = [
+    {}, {}
+  ]
   async run() {
-    // For text-only input, use the gemini-pro model
     const model = this.genAI.getGenerativeModel({ model: "gemini-pro" });
     console.log(this.text)
     const prompt = `
@@ -56,33 +54,16 @@ export class AppComponent {
         }
       }
     `
-
-
     const result = await model.generateContent(prompt);
     const response = await result.response;
     const text = response.text();
+    
     const cleanedText = text.replace(/^'|'$|^\s*```\s*json\s*|\s*```$/gm, '');
     this.jsonResponse = JSON.parse(cleanedText)
+    
     console.log(this.jsonResponse);
+    
   }
 }
 
-// {
-//   "gün1": {
-//     "trip-time"
-//     "gezi": [
-//       {
-//         "title": string,
-//         "image": string,
-//         "description": string,
-//         "konum": string,
-//         "tarih": string,
-//         "cafe": [
-//           "name":string
-//           "konum:": string
-//         ]
 
-//       }
-//     ]
-//   }
-// }
